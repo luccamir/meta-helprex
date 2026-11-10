@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meta do dia · Entrar</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#0551A0;--ciano:#22d3ee;--bg1:#06142b;--bg2:#0a2148;--card:rgba(255,255,255,.06);--borda:rgba(255,255,255,.14);--txt:#e8eefc;--sub:#9fb0cf;--erro:#f87171;--ok:#22c55e}
+[data-theme="light"]{--bg1:#eef3fb;--bg2:#dfe9f7;--card:rgba(255,255,255,.8);--borda:rgba(5,81,160,.18);--txt:#0d1b33;--sub:#4b5d7d;--ciano:#0891b2;--erro:#dc2626}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:16px;color:var(--txt);font-family:Inter,"Segoe UI",system-ui,sans-serif;
+  background:radial-gradient(800px 500px at 0% 0%,rgba(34,211,238,.18),transparent 60%),radial-gradient(800px 500px at 100% 0%,rgba(5,81,160,.45),transparent 60%),linear-gradient(160deg,var(--bg1),var(--bg2))}
+.card{width:100%;max-width:380px;background:var(--card);border:1px solid var(--borda);border-radius:20px;padding:28px;backdrop-filter:blur(14px);box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--azul),var(--ciano));display:grid;place-items:center;box-shadow:0 0 24px rgba(34,211,238,.45);margin-bottom:14px}
+h1{margin:0 0 4px;font-size:24px;font-weight:800}
+p.sub{margin:0 0 20px;color:var(--sub);font-size:14px}
+label{display:block;font-size:13px;color:var(--sub);margin:12px 0 6px}
+input{width:100%;padding:11px 13px;border-radius:12px;border:1px solid var(--borda);background:rgba(0,0,0,.18);color:var(--txt);font:500 15px Inter,sans-serif}
+[data-theme="light"] input{background:#fff}
+input:focus{outline:none;border-color:var(--ciano)}
+button{width:100%;margin-top:20px;padding:12px;border:0;border-radius:12px;background:linear-gradient(90deg,var(--azul),var(--ciano));color:#fff;font:700 15px Inter,sans-serif;cursor:pointer}
+button:disabled{opacity:.6;cursor:wait}
+.msg{margin-top:14px;font-size:13.5px;min-height:18px}
+.msg.erro{color:var(--erro)}.msg.ok{color:var(--ok)}
+.oculto{display:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4L21 4"/></svg></div>
+
+  <form id="fLogin">
+    <h1>Meta do dia</h1>
+    <p class="sub">Entre com o usuário e a senha que o administrador criou para você.</p>
+    <label for="login">Usuário</label>
+    <input id="login" autocomplete="username" required autofocus>
+    <label for="senha">Senha</label>
+    <input id="senha" type="password" autocomplete="current-password" required>
+    <button id="bEntrar">Entrar</button>
+    <div class="msg" id="mLogin"></div>
+    <p class="sub oculto" id="dicaDemo" style="margin:14px 0 0;padding:10px 12px;border:1px dashed var(--borda);border-radius:12px">🎯 <b>Demonstração</b> com dados fictícios: usuário <b>demo</b> e senha <b>demo123</b>.</p>
+  </form>
+
+  <form id="fTrocar" class="oculto">
+    <h1>Trocar senha</h1>
+    <p class="sub" id="subTrocar">Escolha uma senha nova, com pelo menos 6 caracteres.</p>
+    <label for="atual">Senha atual</label>
+    <input id="atual" type="password" autocomplete="current-password" required>
+    <label for="nova">Nova senha</label>
+    <input id="nova" type="password" autocomplete="new-password" minlength="6" required>
+    <label for="nova2">Repita a nova senha</label>
+    <input id="nova2" type="password" autocomplete="new-password" minlength="6" required>
+    <button id="bTrocar">Salvar nova senha</button>
+    <div class="msg" id="mTrocar"></div>
+  </form>
+</div>
+<script>
+(function(){
+  try{var t=localStorage.getItem('metaTema');if(t)document.documentElement.dataset.theme=t;}catch(e){}
+  var $=function(id){return document.getElementById(id);};
+  function post(url,dados){return fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(dados),credentials:'same-origin'}).then(function(r){return r.json().then(function(j){j._status=r.status;return j;});});}
+  function mostrarTroca(primeiro){
+    $('fLogin').classList.add('oculto');$('fTrocar').classList.remove('oculto');
+    if(primeiro)$('subTrocar').textContent='Primeiro acesso: troque a senha padrão por uma só sua (mínimo 6 caracteres).';
+    $('atual').focus();
+  }
+  if(/[?&]trocar=1/.test(location.search))mostrarTroca(false);
+  fetch('/api/config').then(function(r){return r.json();}).then(function(c){if(c.demo)$('dicaDemo').classList.remove('oculto');}).catch(function(){});
+
+  $('fLogin').onsubmit=function(e){
+    e.preventDefault();$('bEntrar').disabled=true;$('mLogin').className='msg';$('mLogin').textContent='';
+    post('/api/login',{login:$('login').value,senha:$('senha').value}).then(function(j){
+      $('bEntrar').disabled=false;
+      if(!j.ok){$('mLogin').className='msg erro';$('mLogin').textContent=j.erro||'Não foi possível entrar.';return;}
+      if(j.trocarSenha){$('atual').value=$('senha').value;mostrarTroca(true);$('nova').focus();return;}
+      location.href='/';
+    }).catch(function(){$('bEntrar').disabled=false;$('mLogin').className='msg erro';$('mLogin').textContent='Falha de conexão.';});
+  };
+
+  $('fTrocar').onsubmit=function(e){
+    e.preventDefault();$('mTrocar').className='msg';$('mTrocar').textContent='';
+    if($('nova').value!==$('nova2').value){$('mTrocar').className='msg erro';$('mTrocar').textContent='As duas senhas novas não são iguais.';return;}
+    $('bTrocar').disabled=true;
+    post('/api/trocar-senha',{atual:$('atual').value,nova:$('nova').value}).then(function(j){
+      $('bTrocar').disabled=false;
+      if(!j.ok){$('mTrocar').className='msg erro';$('mTrocar').textContent=j.erro||'Não foi possível trocar.';if(j._status===401)setTimeout(function(){location.href='/login';},1500);return;}
+      $('mTrocar').className='msg ok';$('mTrocar').textContent='Senha trocada! Abrindo o painel…';
+      setTimeout(function(){location.href='/';},700);
+    }).catch(function(){$('bTrocar').disabled=false;$('mTrocar').className='msg erro';$('mTrocar').textContent='Falha de conexão.';});
+  };
+})();
+</script>
+</body>
+</html>

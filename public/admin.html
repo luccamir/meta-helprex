@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meta do dia · Administração</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--azul:#0551A0;--ciano:#22d3ee;--verde:#22c55e;--ambar:#f59e0b;--vermelho:#ef4444;--bg1:#06142b;--bg2:#0a2148;--card:rgba(255,255,255,.06);--borda:rgba(255,255,255,.12);--txt:#e8eefc;--sub:#9fb0cf;--campo:rgba(0,0,0,.18)}
+[data-theme="light"]{--bg1:#eef3fb;--bg2:#dfe9f7;--card:rgba(255,255,255,.8);--borda:rgba(5,81,160,.15);--txt:#0d1b33;--sub:#4b5d7d;--ciano:#0891b2;--verde:#16a34a;--ambar:#d97706;--campo:#fff}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--txt);font-family:Inter,"Segoe UI",system-ui,sans-serif;
+  background:radial-gradient(900px 500px at 0% 0%,rgba(34,211,238,.15),transparent 60%),radial-gradient(800px 500px at 100% 0%,rgba(5,81,160,.4),transparent 60%),linear-gradient(160deg,var(--bg1),var(--bg2));background-attachment:fixed}
+main{max-width:1180px;margin:0 auto;padding:24px 16px 60px}
+.topo{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(22px,4vw,30px);font-weight:800}
+h2{font-size:17px;margin:30px 0 12px}
+.sub{color:var(--sub);font-size:13px}
+a.btn,.btn{display:inline-block;border:1px solid var(--borda);background:var(--card);color:var(--txt);border-radius:999px;padding:8px 14px;font:600 13px Inter,sans-serif;cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--ciano)}
+.btn.prim{background:linear-gradient(90deg,var(--azul),var(--ciano));border-color:transparent;color:#fff}
+.btn.perigo{color:var(--vermelho)}
+.btn.peq{padding:5px 10px;font-size:12px}
+.card{background:var(--card);border:1px solid var(--borda);border-radius:18px;padding:18px;backdrop-filter:blur(14px)}
+.grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;align-items:end}
+label{display:block;font-size:12.5px;color:var(--sub);margin-bottom:5px}
+input,select{width:100%;padding:9px 11px;border-radius:10px;border:1px solid var(--borda);background:var(--campo);color:var(--txt);font:500 14px Inter,sans-serif}
+select option{color:#0d1b33}
+.chk{display:flex;gap:16px;flex-wrap:wrap;align-items:center;font-size:13.5px}
+.chk label{display:flex;gap:6px;align-items:center;margin:0;color:var(--txt)}
+.chk input{width:auto}
+.tabela{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th,td{padding:10px 8px;border-bottom:1px solid var(--borda);text-align:left;vertical-align:middle}
+th{color:var(--sub);font-weight:600;font-size:12.5px}
+td select{min-width:180px}
+.pilula{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;border:1px solid}
+.p-ok{color:var(--verde);border-color:var(--verde)}.p-off{color:var(--vermelho);border-color:var(--vermelho)}.p-troca{color:var(--ambar);border-color:var(--ambar)}.p-adm{color:var(--ciano);border-color:var(--ciano)}
+.acoes{display:flex;gap:6px;flex-wrap:wrap}
+#aviso{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);padding:10px 16px;border-radius:12px;font-weight:600;font-size:14px;display:none;z-index:9;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+#aviso.ok{display:block;background:var(--verde);color:#fff}#aviso.erro{display:block;background:var(--vermelho);color:#fff}
+.vazio{color:var(--sub);padding:14px;text-align:center}
+</style>
+</head>
+<body>
+<main>
+  <div class="topo">
+    <div><h1>Administração</h1><div class="sub">Usuários do painel da meta e registro de acessos</div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="btn" href="/">← Painel</a><a class="btn" href="/api/logout">Sair</a></div>
+  </div>
+
+  <h2>Novo usuário</h2>
+  <form class="card" id="fNovo">
+    <div class="grade">
+      <div><label for="nAnalista">Analista no HelpRex</label><select id="nAnalista"><option value="">— nenhum —</option></select></div>
+      <div><label for="nNome">Nome</label><input id="nNome" required></div>
+      <div><label for="nLogin">Login</label><input id="nLogin" required pattern="[a-zA-Z0-9._\-]{3,40}" title="3 a 40 caracteres: letras, números, ponto, hífen ou _"></div>
+      <div><label for="nSenha">Senha padrão (troca no 1º acesso)</label><input id="nSenha" required minlength="6"></div>
+      <div><label for="nMeta">Meta diária (vazio = padrão)</label><input id="nMeta" type="number" min="1" max="200" placeholder="10"></div>
+    </div>
+    <div class="chk" style="margin-top:14px">
+      <label><input type="checkbox" id="nVerTodos" checked> Pode ver a meta dos outros analistas</label>
+      <label><input type="checkbox" id="nAdmin"> Administrador</label>
+      <button class="btn prim" style="margin-left:auto">Criar usuário</button>
+    </div>
+  </form>
+
+  <h2>Usuários</h2>
+  <div class="card tabela"><table>
+    <thead><tr><th>Nome / login</th><th>Analista no HelpRex</th><th>Meta diária</th><th>Permissões</th><th>Situação</th><th>Último acesso</th><th>Ações</th></tr></thead>
+    <tbody id="tUsuarios"><tr><td colspan="7" class="vazio">Carregando…</td></tr></tbody>
+  </table></div>
+
+  <h2>Acessos recentes</h2>
+  <div class="card tabela"><table>
+    <thead><tr><th>Quando</th><th>Login</th><th>Resultado</th><th>Detalhe</th><th>IP</th></tr></thead>
+    <tbody id="tAcessos"></tbody>
+  </table></div>
+</main>
+<div id="aviso"></div>
+<script>
+(function(){
+  try{var t=localStorage.getItem('metaTema');if(t)document.documentElement.dataset.theme=t;}catch(e){}
+  var $=function(id){return document.getElementById(id);};
+  var D={usuarios:[],acessos:[],analistas:[]},senhaPadrao='';
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function dataHora(iso){if(!iso)return '—';var d=new Date(iso);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+  function aviso(txt,tipo){var a=$('aviso');a.textContent=txt;a.className=tipo;clearTimeout(aviso.t);aviso.t=setTimeout(function(){a.className='';},3000);}
+  function api(dados){return fetch('/api/admin',{method:dados?'POST':'GET',headers:{'Content-Type':'application/json'},body:dados?JSON.stringify(dados):undefined,credentials:'same-origin'}).then(function(r){
+    if(r.status===401){location.href='/login';throw new Error('sessao');}
+    return r.json().then(function(j){if(!r.ok)throw new Error(j.erro||'Erro');return j;});});}
+  function opcoesAnalistas(sel){return '<option value="">— nenhum —</option>'+D.analistas.map(function(a){return '<option value="'+esc(a.id)+'"'+(a.id===sel?' selected':'')+'>'+esc(a.nome)+'</option>';}).join('');}
+  function nomeAnalista(id){var a=D.analistas.filter(function(x){return x.id===id;})[0];return a?a.nome:'';}
+
+  function desenhar(){
+    $('nAnalista').innerHTML=opcoesAnalistas('');
+    $('nMeta').placeholder=D.metaPadrao||10;
+    var T=$('tUsuarios');
+    if(!D.usuarios.length){T.innerHTML='<tr><td colspan="7" class="vazio">Nenhum usuário.</td></tr>';}
+    else T.innerHTML=D.usuarios.map(function(u){
+      var eu=u.login===D.eu;
+      var sit=!u.ativo?'<span class="pilula p-off">desativado</span>':(u.trocarSenha?'<span class="pilula p-troca">aguardando troca de senha</span>':'<span class="pilula p-ok">ativo</span>');
+      return '<tr data-login="'+esc(u.login)+'">'+
+        '<td><b>'+esc(u.nome)+'</b><div class="sub">'+esc(u.login)+(eu?' (você)':'')+'</div></td>'+
+        '<td><select data-campo="helprexId">'+opcoesAnalistas(u.helprexId)+'</select></td>'+
+        '<td><input type="number" min="1" max="200" data-campo="meta" style="width:80px" value="'+(u.meta==null?'':esc(u.meta))+'" placeholder="'+esc(D.metaPadrao||10)+'" title="Vazio = meta padrão"></td>'+
+        '<td><div class="chk" style="flex-direction:column;align-items:flex-start;gap:4px">'+
+          '<label><input type="checkbox" data-campo="verTodos"'+(u.verTodos?' checked':'')+'> vê todos</label>'+
+          '<label><input type="checkbox" data-campo="admin"'+(u.admin?' checked':'')+(eu?' disabled':'')+'> admin</label></div></td>'+
+        '<td>'+sit+'</td>'+
+        '<td>'+dataHora(u.ultimoAcesso)+'</td>'+
+        '<td><div class="acoes">'+
+          '<button class="btn peq" data-acao="resetar">Resetar senha</button>'+
+          (eu?'':'<button class="btn peq" data-acao="ativo">'+(u.ativo?'Desativar':'Ativar')+'</button>')+
+          (eu?'':'<button class="btn peq perigo" data-acao="excluir">Excluir</button>')+
+        '</div></td></tr>';
+    }).join('');
+    var A=$('tAcessos');
+    A.innerHTML=D.acessos.length?D.acessos.map(function(a){
+      return '<tr><td>'+dataHora(a.quando)+'</td><td>'+esc(a.login)+'</td><td>'+(a.ok?'<span class="pilula p-ok">ok</span>':'<span class="pilula p-off">falhou</span>')+'</td><td>'+esc(a.detalhe||(a.ok?'entrou':''))+'</td><td class="sub">'+esc(a.ip)+'</td></tr>';
+    }).join(''):'<tr><td colspan="5" class="vazio">Nenhum acesso registrado.</td></tr>';
+  }
+  function carregar(){return api().then(function(j){D=j;desenhar();}).catch(function(e){if(e.message!=='sessao')aviso(e.message,'erro');});}
+
+  // Escolher o analista sugere nome e login (parte do e-mail antes do @)
+  $('nAnalista').onchange=function(){
+    var a=D.analistas.filter(function(x){return x.id===$('nAnalista').value;})[0];if(!a)return;
+    $('nNome').value=a.nome;
+    $('nLogin').value=String(a.email||'').split('@')[0].toLowerCase()||a.nome.split(' ')[0].toLowerCase();
+  };
+  $('fNovo').onsubmit=function(e){
+    e.preventDefault();
+    var senha=$('nSenha').value;senhaPadrao=senha;
+    api({acao:'criar',login:$('nLogin').value,nome:$('nNome').value,helprexId:$('nAnalista').value,senha:senha,meta:$('nMeta').value,verTodos:$('nVerTodos').checked,admin:$('nAdmin').checked})
+      .then(function(){aviso('Usuário criado. Passe o login e a senha padrão para a pessoa.','ok');$('nNome').value='';$('nLogin').value='';$('nAnalista').value='';$('nMeta').value='';carregar();})
+      .catch(function(e){aviso(e.message,'erro');});
+  };
+  $('tUsuarios').addEventListener('change',function(e){
+    var campo=e.target.dataset.campo;if(!campo)return;
+    var login=e.target.closest('tr').dataset.login,dados={acao:'editar',login:login};
+    dados[campo]=e.target.type==='checkbox'?e.target.checked:e.target.value;
+    api(dados).then(function(){aviso('Alteração salva.','ok');carregar();}).catch(function(x){aviso(x.message,'erro');carregar();});
+  });
+  $('tUsuarios').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;
+    var login=b.closest('tr').dataset.login,u=D.usuarios.filter(function(x){return x.login===login;})[0];
+    if(b.dataset.acao==='resetar'){
+      var s=prompt('Nova senha padrão para '+u.nome+' (a pessoa troca no próximo acesso):',senhaPadrao);
+      if(!s)return;
+      api({acao:'resetar',login:login,senha:s}).then(function(){aviso('Senha resetada.','ok');carregar();}).catch(function(x){aviso(x.message,'erro');});
+    }else if(b.dataset.acao==='ativo'){
+      api({acao:'editar',login:login,ativo:!u.ativo}).then(function(){aviso(u.ativo?'Usuário desativado.':'Usuário ativado.','ok');carregar();}).catch(function(x){aviso(x.message,'erro');});
+    }else if(b.dataset.acao==='excluir'){
+      if(!confirm('Excluir o usuário '+u.nome+'? Ele perde o acesso.'))return;
+      api({acao:'excluir',login:login}).then(function(){aviso('Usuário excluído.','ok');carregar();}).catch(function(x){aviso(x.message,'erro');});
+    }
+  });
+  carregar();
+})();
+</script>
+</body>
+</html>
