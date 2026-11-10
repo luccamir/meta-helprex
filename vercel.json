@@ -1,0 +1,13 @@
+{
+  "outputDirectory": "public",
+  "rewrites": [
+    { "source": "/", "destination": "/api/painel" },
+    { "source": "/atualizar", "destination": "/api/painel?atualizar=1" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ],
+  "functions": {
+    "api/painel.js": { "maxDuration": 60, "includeFiles": "templates/**" },
+    "api/admin.js": { "maxDuration": 30 }
+  }
+}

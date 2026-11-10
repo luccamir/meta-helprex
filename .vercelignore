@@ -1,0 +1,7 @@
+dev.js
+node_modules
+.env*
+.admin-inicial.txt
+docs
+README.md
+LICENSE
