@@ -2,7 +2,8 @@
 
 Painel web que mostra, para cada analista de suporte, **quantos chamados ele resolveu no dia** frente à meta diária, com login, área de administração e dados vindos em tempo real da API do helpdesk **HelpRex**.
 
-> 🎯 Os prints abaixo usam o **modo demonstração**, com analistas, clientes e chamados fictícios.
+### 👉 [Ver demonstração ao vivo](https://meta-helprex-demo.vercel.app)
+Entre com o usuário **demo** e a senha **demo123**. A demonstração usa analistas, clientes e chamados **fictícios**; a versão real roda com login para o time de suporte.
 
 ![Painel da meta](docs/painel.jpg)
 
