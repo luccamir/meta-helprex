@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meta do dia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#0551A0;--ciano:#22d3ee;--verde:#22c55e;--ambar:#f59e0b;--vermelho:#ef4444;--roxo:#a78bfa;
+  --bg1:#06142b;--bg2:#0a2148;--card:rgba(255,255,255,.06);--borda:rgba(255,255,255,.12);
+  --txt:#e8eefc;--sub:#9fb0cf;--sombra:0 10px 30px rgba(0,0,0,.35);--trilho:rgba(255,255,255,.10);
+}
+[data-theme="light"]{
+  --bg1:#eef3fb;--bg2:#dfe9f7;--card:rgba(255,255,255,.75);--borda:rgba(5,81,160,.15);
+  --txt:#0d1b33;--sub:#4b5d7d;--sombra:0 10px 30px rgba(5,81,160,.12);--trilho:rgba(5,81,160,.12);
+  --ciano:#0891b2;--verde:#16a34a;--ambar:#d97706;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  min-height:100vh;color:var(--txt);font-family:Inter,"Segoe UI",system-ui,sans-serif;
+  background:
+    radial-gradient(900px 500px at 0% 0%,rgba(34,211,238,.18),transparent 60%),
+    radial-gradient(800px 500px at 100% 0%,rgba(5,81,160,.45),transparent 60%),
+    radial-gradient(700px 500px at 50% 110%,rgba(167,139,250,.15),transparent 60%),
+    linear-gradient(160deg,var(--bg1),var(--bg2));
+  background-attachment:fixed;overflow-x:hidden;
+}
+main{max-width:1180px;margin:0 auto;padding:28px 16px 60px}
+.topo{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.marca{display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--azul),var(--ciano));display:grid;place-items:center;box-shadow:0 0 24px rgba(34,211,238,.45)}
+h1{font-size:clamp(22px,4vw,32px);font-weight:800;margin:0;letter-spacing:-.02em}
+.sub{color:var(--sub);font-size:13px}
+.btn{border:1px solid var(--borda);background:var(--card);color:var(--txt);border-radius:999px;padding:8px 14px;font:600 13px Inter,sans-serif;cursor:pointer;backdrop-filter:blur(10px)}
+.btn:hover{border-color:var(--ciano)}
+/* Lista aberta do seletor e calendário: o navegador desenha com cores do sistema, então fixa as do tema */
+:root{color-scheme:dark}
+[data-theme="light"]{color-scheme:light}
+select.btn option{background:#0a2148;color:#e8eefc}
+[data-theme="light"] select.btn option{background:#fff;color:#0d1b33}
+.card{background:var(--card);border:1px solid var(--borda);border-radius:18px;box-shadow:var(--sombra);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:transform .25s,border-color .25s,box-shadow .25s}
+.card:hover{transform:translateY(-3px);border-color:rgba(34,211,238,.55);box-shadow:0 14px 34px rgba(34,211,238,.18)}
+.anim{opacity:0;transform:translateY(14px);animation:entra .55s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes entra{to{opacity:1;transform:none}}
+.hero{display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center;padding:24px;margin-top:22px}
+.anel{position:relative;width:190px;height:190px}
+.anel svg{transform:rotate(-90deg)}
+.anel .num{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.anel .num b{font-size:48px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.anel .num .cap{display:block;color:var(--sub);font-size:13px;margin-top:6px}
+.status{font-size:clamp(22px,3.4vw,30px);font-weight:800;margin:0 0 6px}
+.status.ok{background:linear-gradient(90deg,var(--verde),var(--ciano));-webkit-background-clip:text;background-clip:text;color:transparent}
+.resumo{color:var(--sub);line-height:1.6}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:18px}
+.kpi{padding:18px;display:flex;gap:14px;align-items:center}
+.ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none}
+.kpi b{display:block;font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi small{color:var(--sub);font-size:13px}
+h2{font-size:18px;margin:34px 0 12px;display:flex;align-items:center;gap:10px}
+h2 .linha{flex:1;height:1px;background:var(--borda)}
+.timeline{position:relative;padding:22px 18px 18px;overflow:hidden}
+.trilho{position:relative;height:6px;border-radius:6px;background:var(--trilho);margin:44px 8px 30px}
+.trilho .prog{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,var(--azul),var(--ciano));width:0;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.ponto{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;transform:translate(-50%,-50%) scale(0);border:3px solid var(--bg1);transition:transform .4s cubic-bezier(.3,1.6,.5,1);cursor:pointer}
+.ponto.on{transform:translate(-50%,-50%) scale(1)}
+.ponto .tip{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;background:var(--bg2);color:var(--txt);border:1px solid var(--borda);padding:4px 8px;border-radius:8px;opacity:0;pointer-events:none;transition:opacity .2s}
+.ponto:hover .tip{opacity:1}
+.horas{display:flex;justify-content:space-between;color:var(--sub);font-size:12px;margin:0 8px}
+.legenda{display:flex;gap:16px;flex-wrap:wrap;color:var(--sub);font-size:12px;margin-top:10px}
+.legenda i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--borda);background:var(--card);color:var(--txt);padding:7px 14px;border-radius:999px;font:600 13px Inter,sans-serif;cursor:pointer;transition:all .2s}
+.chip.ativo{background:linear-gradient(90deg,var(--azul),var(--ciano));border-color:transparent;color:#fff}
+.lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.ch{padding:16px 16px 14px;display:flex;flex-direction:column;gap:8px;border-left:4px solid var(--c);transition:opacity .3s,transform .3s}
+.ch.some{opacity:0;transform:scale(.96);pointer-events:none;position:absolute;visibility:hidden}
+.ch .l1{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ch a{color:var(--ciano);font-weight:800;text-decoration:none;font-size:16px}
+.ch a:hover{text-decoration:underline}
+.ch .ass{font-weight:600;line-height:1.35}
+.ch .cli{color:var(--sub);font-size:13px}
+.pilula{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--c);border:1px solid color-mix(in srgb,var(--c) 45%,transparent)}
+.meta{display:flex;gap:8px;flex-wrap:wrap;color:var(--sub);font-size:12px}
+.nota{font-size:12.5px;color:var(--sub);border-top:1px dashed var(--borda);padding-top:8px;line-height:1.45}
+.alerta{padding:18px;border:1px solid rgba(245,158,11,.55);background:linear-gradient(135deg,rgba(245,158,11,.14),rgba(245,158,11,.04));border-radius:18px}
+.alerta h3{margin:0 0 6px;color:var(--ambar);font-size:16px}
+.alerta ul{margin:6px 0 0;padding-left:18px;line-height:1.7}
+.vazio{color:var(--sub);padding:18px;text-align:center}
+.rodape{margin-top:40px;color:var(--sub);font-size:12px;text-align:center}
+#confete{position:fixed;inset:0;pointer-events:none;z-index:50}
+@media (max-width:640px){.hero{grid-template-columns:1fr;justify-items:center;text-align:center}.anel{width:160px;height:160px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.anim{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="confete"></canvas>
+<main>
+  <div class="topo anim">
+    <div class="marca">
+      <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l4 4L21 4"/></svg></div>
+      <div><h1>Meta do dia</h1><div class="sub" id="subtitulo">—</div></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <select class="btn" id="analista" title="Ver a análise de outro analista" style="display:none"></select>
+      <input type="date" class="btn" id="dia" title="Ver outro dia" style="display:none">
+      <button class="btn" id="atualizar" style="display:none">⟳ Atualizar</button>
+      <button class="btn" id="tema">☀ Tema claro</button>
+      <a class="btn" id="linkAdmin" href="/admin" style="display:none;text-decoration:none">⚙ Admin</a>
+      <a class="btn" href="/login?trocar=1" style="text-decoration:none">🔑 Senha</a>
+      <a class="btn" href="/api/logout" style="text-decoration:none">Sair</a>
+    </div>
+  </div>
+
+  <section class="card hero anim">
+    <div class="anel">
+      <svg width="100%" height="100%" viewBox="0 0 200 200">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0551A0"/><stop offset="1" stop-color="#22d3ee"/></linearGradient></defs>
+        <circle cx="100" cy="100" r="84" fill="none" stroke="var(--trilho)" stroke-width="16"/>
+        <circle id="arco" cx="100" cy="100" r="84" fill="none" stroke="url(#g)" stroke-width="16" stroke-linecap="round" stroke-dasharray="527.8" stroke-dashoffset="527.8" style="transition:stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1)"/>
+      </svg>
+      <div class="num"><div><b><span id="feitos">0</span><span style="font-size:24px;color:var(--sub)">/<span id="metaN">—</span></span></b><span class="cap">resolvidos / fechados</span></div></div>
+    </div>
+    <div>
+      <p class="status" id="frase">—</p>
+      <div class="resumo" id="resumo">—</div>
+    </div>
+  </section>
+
+  <section class="kpis" id="kpis"></section>
+
+  <div id="avisos"></div>
+
+  <h2>Linha do tempo do dia <span class="linha"></span></h2>
+  <section class="card timeline anim" id="timeline"></section>
+
+  <h2>Chamados <span class="linha"></span></h2>
+  <div class="chips" id="chips"></div>
+  <section class="lista" id="lista"></section>
+
+  <div class="rodape" id="rodape">—</div>
+</main>
+
+<script id="dados" type="application/json">__DADOS__</script>
+<script>
+(function(){
+  var D = JSON.parse(document.getElementById('dados').textContent);
+  var reduz = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Analista selecionado (#a=<id>); sem seleção = a pessoa logada
+  var AL=D.analistas||[], nome=D.nomeEu||'—', ehEu=true;
+  if(D.usuario&&D.usuario.admin)document.getElementById('linkAdmin').style.display='';
+  var hid=(location.hash.match(/a=([\w-]+)/)||[])[1];
+  var AS=AL.filter(function(a){return a.id===hid;})[0];
+  if(AS){
+    ['contamNoPainel','resolvidosPorMim','semMeuNome','encaminhados','retornos','melhorias','chamados'].forEach(function(k){D[k]=AS[k];});
+    nome=AS.nome;ehEu=AS.id===D.eu;
+    if(AS.meta)D.meta=AS.meta;
+  }
+  D.chamados=D.chamados||[];
+  var primeiro=nome.split(' ')[0];
+  var semNomeTxt=ehEu?'Sem meu nome':'Sem o nome de '+primeiro;
+  if(AL.length>1){
+    var sa=document.getElementById('analista');sa.style.display='';
+    AL.forEach(function(a){var o=document.createElement('option');o.value=a.id;o.textContent=a.nome+' · '+a.resolvidosPorMim+'/'+(a.meta||D.meta);if(a.id===(AS?AS.id:D.eu))o.selected=true;sa.appendChild(o);});
+    sa.onchange=function(){location.hash='a='+sa.value;location.reload();};
+  }
+
+  var CAT = {
+    meta:{nome:'Na meta',cor:'var(--verde)',hex:'#22c55e'},
+    semNome:{nome:semNomeTxt,cor:'var(--ambar)',hex:'#f59e0b'},
+    encaminhado:{nome:'Encaminhado',cor:'var(--ciano)',hex:'#22d3ee'},
+    retorno:{nome:'Retorno (já contou antes)',cor:'var(--sub)',hex:'#94a3b8'}
+  };
+  // Chamados em que vale a hora da última mensagem do analista (não foram resolvidos no dia)
+  function porMsg(c){return c.categoria==='encaminhado'||c.categoria==='retorno';}
+  function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+  function esc(s){return (s==null||s==='')?'—':String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var atraso=0;function anim(e){if(!reduz){e.classList.add('anim');e.style.animationDelay=(atraso+=60)+'ms';}}
+
+  // Tema
+  var bt=document.getElementById('tema');
+  try{var t=localStorage.getItem('metaTema');if(t)document.documentElement.dataset.theme=t;}catch(e){}
+  function rotulo(){bt.textContent=document.documentElement.dataset.theme==='light'?'☾ Tema escuro':'☀ Tema claro';}
+  rotulo();
+  bt.onclick=function(){var n=document.documentElement.dataset.theme==='light'?'dark':'light';document.documentElement.dataset.theme=n;try{localStorage.setItem('metaTema',n);}catch(e){}rotulo();};
+
+  // Atualizar e trocar de dia (só quando aberto pelo painel local, hx-painel.ps1)
+  if(location.protocol.indexOf('http')===0){
+    var ba=document.getElementById('atualizar'),di=document.getElementById('dia');
+    ba.style.display='';di.style.display='';di.value=D.data;
+    ba.onclick=function(){ba.disabled=true;ba.textContent='⟳ Consultando o HelpRex… (1 a 3 min)';location.href='/atualizar?data='+D.data+location.hash;};
+    di.onchange=function(){if(di.value)location.href='/?data='+di.value+location.hash;};
+  }
+
+  // Topo
+  document.getElementById('subtitulo').textContent=(D.dataBr||'—')+' · '+nome;
+  document.getElementById('metaN').textContent=D.meta;
+  var feitos=D.resolvidosPorMim||0, meta=D.meta||10, falta=Math.max(0,meta-feitos), bateu=feitos>=meta;
+  var fr=document.getElementById('frase');
+  fr.textContent=bateu?'Meta batida! 🎉':(falta===1?'Falta 1 para a meta':'Faltam '+falta+' para a meta');
+  if(bateu)fr.classList.add('ok');
+  document.getElementById('resumo').innerHTML=
+    '<b>'+D.contamNoPainel+'</b> contam no painel do HelpRex · <b>'+D.semMeuNome+'</b> resolvidos '+(ehEu?'sem o seu nome':'sem o nome de '+primeiro)+' · <b>'+D.encaminhados+'</b> atendidos e encaminhados'+(D.retornos?' · <b>'+D.retornos+'</b> retorno(s) de chamado já resolvido antes':'');
+
+  function contar(e,alvo){if(reduz){e.textContent=alvo;return;}var t0=null;function p(ts){if(!t0)t0=ts;var k=Math.min(1,(ts-t0)/1000);e.textContent=Math.round(alvo*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(p);}requestAnimationFrame(p);}
+  contar(document.getElementById('feitos'),feitos);
+  setTimeout(function(){document.getElementById('arco').style.strokeDashoffset=527.8*(1-Math.min(1,feitos/meta));},150);
+
+  // KPIs
+  var ic={
+    ok:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>',
+    user:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>',
+    seta:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    luz:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg>'
+  };
+  var kp=[
+    ['Contam no painel',D.contamNoPainel,'linear-gradient(135deg,#16a34a,#22c55e)',ic.ok],
+    ['Resolvidos '+(ehEu?'sem meu nome':'sem o nome de '+primeiro),D.semMeuNome,'linear-gradient(135deg,#d97706,#f59e0b)',ic.user],
+    ['Atendidos e encaminhados',D.encaminhados,'linear-gradient(135deg,#0551A0,#22d3ee)',ic.seta],
+    ['Melhorias entre os resolvidos',D.melhorias,'linear-gradient(135deg,#7c3aed,#a78bfa)',ic.luz]
+  ];
+  var K=document.getElementById('kpis');
+  kp.forEach(function(k){var c=el('div','card kpi');c.innerHTML='<div class="ico" style="background:'+k[2]+'">'+k[3]+'</div><div><b>0</b><small>'+k[0]+'</small></div>';K.appendChild(c);anim(c);contar(c.querySelector('b'),k[1]||0);});
+
+  // Avisos (âmbar)
+  var sem=D.chamados.filter(function(c){return c.categoria==='semNome';});
+  var mel=D.chamados.filter(function(c){return c.melhoria&&!porMsg(c);});
+  var A=document.getElementById('avisos');
+  if(sem.length||mel.length){
+    var a=el('section','alerta anim');a.style.marginTop='18px';var h='';
+    if(sem.length){h+=(ehEu?'<h3>Resolvidos por você, mas sem o seu nome</h3><div class="sub">Coloque-se como responsável (se combinado) para contar no painel.</div>':'<h3>Resolvidos por '+esc(primeiro)+', mas sem o próprio nome no chamado</h3><div class="sub">Não contam no painel do HelpRex para '+esc(primeiro)+'.</div>')+'<ul>'+sem.map(function(c){return '<li><a style="color:var(--ambar);font-weight:700" target="_blank" href="'+c.link+'">#'+c.numero+'</a> '+esc(c.assunto)+'</li>';}).join('')+'</ul>';}
+    if(mel.length){h+=(sem.length?'<div style="height:12px"></div>':'')+'<h3>Melhorias entre os resolvidos</h3><ul>'+mel.map(function(c){return '<li>#'+c.numero+' '+esc(c.assunto)+'</li>';}).join('')+'</ul>';}
+    a.innerHTML=h;A.appendChild(a);anim(a);
+  }
+
+  // Linha do tempo
+  var T=document.getElementById('timeline');
+  var pts=D.chamados.map(function(c){var h=porMsg(c)?c.horaMinha:(c.resolvidoEm||c.horaMinha);if(!h)return null;var p=h.split(':');return {c:c,m:(+p[0])*60+(+p[1]),h:h};}).filter(Boolean);
+  if(!pts.length){T.innerHTML='<div class="vazio">Nenhum chamado com horário neste dia.</div>';}
+  else{
+    var ini=Math.min(8*60,Math.min.apply(null,pts.map(function(p){return p.m;})));
+    var fim=Math.max(18*60,Math.max.apply(null,pts.map(function(p){return p.m;})));
+    ini=Math.floor(ini/60)*60;fim=Math.ceil(fim/60)*60;
+    var tr=el('div','trilho');var pr=el('div','prog');tr.appendChild(pr);
+    pts.sort(function(a,b){return a.m-b.m;}).forEach(function(p,i){
+      var d=el('div','ponto');var cat=CAT[p.c.categoria];
+      d.style.left=((p.m-ini)/(fim-ini)*100)+'%';d.style.background=cat.hex;d.style.boxShadow='0 0 14px '+cat.hex;
+      d.innerHTML='<span class="tip">'+p.h+' · #'+p.c.numero+' · '+esc(p.c.assunto).slice(0,40)+'</span>';
+      d.onclick=function(){window.open(p.c.link,'_blank');};
+      tr.appendChild(d);setTimeout(function(){d.classList.add('on');},reduz?0:400+i*90);
+    });
+    var agora=new Date(),mAgora=agora.getHours()*60+agora.getMinutes();
+    setTimeout(function(){pr.style.width=Math.max(0,Math.min(100,(mAgora-ini)/(fim-ini)*100))+'%';},200);
+    var hs=el('div','horas');for(var x=ini;x<=fim;x+=120){hs.appendChild(el('span',null,String(Math.floor(x/60)).padStart(2,'0')+'h'));}
+    var lg=el('div','legenda',Object.keys(CAT).map(function(k){return '<span><i style="background:'+CAT[k].hex+'"></i>'+CAT[k].nome+'</span>';}).join(''));
+    T.appendChild(tr);T.appendChild(hs);T.appendChild(lg);
+  }
+
+  // Lista + filtros
+  var L=document.getElementById('lista'),C=document.getElementById('chips');
+  var filtros=[['todos','Todos']].concat(Object.keys(CAT).map(function(k){return [k,CAT[k].nome];}));
+  var cards=[];
+  D.chamados.slice().sort(function(a,b){var o={meta:0,semNome:1,encaminhado:2,retorno:3};return (o[a.categoria]-o[b.categoria])||((b.resolvidoEm||b.horaMinha||'').localeCompare(a.resolvidoEm||a.horaMinha||''));}).forEach(function(c){
+    var cat=CAT[c.categoria];var e=el('article','card ch');e.style.setProperty('--c',cat.hex);e.dataset.cat=c.categoria;
+    var hora=porMsg(c)?(c.horaMinha?'última msg '+c.horaMinha:''):(c.resolvidoEm?'resolvido às '+c.resolvidoEm:'');
+    e.innerHTML='<div class="l1"><a target="_blank" href="'+c.link+'">#'+c.numero+'</a><span class="pilula">'+esc(c.status)+'</span></div>'+
+      '<div class="ass">'+esc(c.assunto)+'</div><div class="cli">'+esc(c.cliente)+'</div>'+
+      '<div class="meta"><span class="pilula" style="--c:'+cat.hex+'">'+cat.nome+'</span>'+(c.melhoria?'<span class="pilula" style="--c:#a78bfa">melhoria</span>':'')+
+      '<span>'+esc(c.grupo)+'</span>'+(hora?'<span>· '+hora+'</span>':'')+'<span>· '+(c.respostas||0)+' resp. / '+(c.notas||0)+' nota(s)</span></div>'+
+      (porMsg(c)&&c.ultimaMinha?'<div class="nota">'+esc(c.ultimaMinha)+'</div>':'');
+    L.appendChild(e);anim(e);cards.push(e);
+  });
+  if(!cards.length)L.innerHTML='<div class="vazio card">Nenhum chamado '+(ehEu?'seu':'de '+esc(primeiro))+' neste dia ainda.</div>';
+  filtros.forEach(function(f,i){
+    var n=f[0]==='todos'?cards.length:cards.filter(function(c){return c.dataset.cat===f[0];}).length;
+    var b=el('button','chip'+(i===0?' ativo':''),f[1]+' · '+n);
+    b.onclick=function(){Array.prototype.forEach.call(C.children,function(x){x.classList.remove('ativo');});b.classList.add('ativo');
+      cards.forEach(function(c){c.classList.toggle('some',!(f[0]==='todos'||c.dataset.cat===f[0]));});};
+    C.appendChild(b);
+  });
+
+  document.getElementById('rodape').textContent='Gerado em '+(D.gerado||'—')+' · dados do HelpRex · meta de '+meta+' resolvidos/fechados por dia';
+
+  // Confete ao bater a meta
+  if(bateu&&!reduz){
+    var cv=document.getElementById('confete'),cx=cv.getContext('2d');cv.width=innerWidth;cv.height=innerHeight;
+    var cores=['#22d3ee','#22c55e','#f59e0b','#a78bfa','#0551A0'],ps=[];
+    for(var i=0;i<140;i++)ps.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*.4,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,r:3+Math.random()*4,c:cores[i%5],a:Math.random()*6});
+    var t0=performance.now();
+    (function q(t){cx.clearRect(0,0,cv.width,cv.height);var vivo=t-t0<2200;
+      ps.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.a+=.1;cx.fillStyle=p.c;cx.globalAlpha=vivo?1:Math.max(0,1-(t-t0-2200)/600);cx.fillRect(p.x,p.y,p.r,p.r*1.6);});
+      if(t-t0<2800)requestAnimationFrame(q);else cx.clearRect(0,0,cv.width,cv.height);})(t0);
+  }
+})();
+</script>
+</body>
+</html>
